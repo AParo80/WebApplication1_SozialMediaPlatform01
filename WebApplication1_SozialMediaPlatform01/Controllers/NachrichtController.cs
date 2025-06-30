@@ -1,0 +1,188 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using WebApplication1_SozialMediaPlatform01.Data;
+using WebApplication1_SozialMediaPlatform01.Models;
+
+namespace WebApplication1_SozialMediaPlatform01.Controllers
+{
+    public class NachrichtController : Controller
+    {
+        private readonly WebApplication1_SozialMediaPlatform01Context _context;
+
+        public NachrichtController(WebApplication1_SozialMediaPlatform01Context context)
+        {
+            _context = context;
+        }
+
+        // GET: Nachricht
+        public async Task<IActionResult> Index()
+        {
+            var webApplication1_SozialMediaPlatform01Context = _context.Nachricht.Include(n => n.User);
+            return View(await webApplication1_SozialMediaPlatform01Context.ToListAsync());
+        }
+
+        //Seite nicht vorhaneden
+        public async Task<IActionResult> BenutzerNachrichtIndex()
+        {
+
+            string guid = Request.Cookies["guid"].ToString();
+            User user = _context.User.Where(x => x.Guid == guid).FirstOrDefault();
+
+            if (user != null)
+            {
+                List<Nachricht> meineNachrichten = _context.Nachricht.Where(x =>x.UserId == user.Id).OrderByDescending(x => x.PostZeitpunkt).Take(5).ToList();
+                return View(meineNachrichten);
+            }
+
+            var webApplication1_SozialMediaPlatform01Context = _context.Nachricht.Include(n => n.User).OrderByDescending(x => x.PostZeitpunkt).Take(5);
+            return View(await webApplication1_SozialMediaPlatform01Context.ToListAsync());
+        }
+
+        // GET: Nachricht/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var nachricht = await _context.Nachricht
+                .Include(n => n.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (nachricht == null)
+            {
+                return NotFound();
+            }
+
+            return View(nachricht);
+        }
+
+        // GET: Nachricht/Create
+        public IActionResult Create()
+        {
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Password");
+            return View();
+        }
+
+        // POST: Nachricht/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Post,UserId,PostZeitpunkt")] Nachricht nachricht)
+        {
+            // Cookie guid wird ausgelesen
+            string guid = Request.Cookies["guid"].ToString();
+            User user = _context.User.Where(x => x.Guid == guid).FirstOrDefault();
+            nachricht.UserId = user.Id;
+            nachricht.PostZeitpunkt=DateTime.Now;
+
+
+            if (ModelState.IsValid)
+            {
+                _context.Add(nachricht);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Password", nachricht.UserId);
+            return View(nachricht);
+        }
+
+        // GET: Nachricht/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var nachricht = await _context.Nachricht.FindAsync(id);
+            if (nachricht == null)
+            {
+                return NotFound();
+            }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Password", nachricht.UserId);
+            return View(nachricht);
+        }
+
+        // POST: Nachricht/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Post,UserId,PostZeitpunkt")] Nachricht nachricht)
+        {
+            if (id != nachricht.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(nachricht);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!NachrichtExists(nachricht.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["UserId"] = new SelectList(_context.User, "Id", "Password", nachricht.UserId);
+            return View(nachricht);
+        }
+
+        // GET: Nachricht/Delete/5
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var nachricht = await _context.Nachricht
+                .Include(n => n.User)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (nachricht == null)
+            {
+                return NotFound();
+            }
+
+            return View(nachricht);
+        }
+
+        // POST: Nachricht/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var nachricht = await _context.Nachricht.FindAsync(id);
+            if (nachricht != null)
+            {
+                _context.Nachricht.Remove(nachricht);
+            }
+
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        private bool NachrichtExists(int id)
+        {
+            return _context.Nachricht.Any(e => e.Id == id);
+        }
+    }
+}
