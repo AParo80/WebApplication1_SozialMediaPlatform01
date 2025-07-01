@@ -8,6 +8,8 @@
     Peep funktioniert!
 
     So weiter: Alles was mit peep zusammenhängt + LIKE (NICHT angefangen)
+
+    Liken kann man nur in Nachricht -> Index
      */
 
     public class Aufgehört

@@ -23,7 +23,7 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
         // GET: Nachricht
         public async Task<IActionResult> Index()
         {
-            var webApplication1_SozialMediaPlatform01Context = _context.Nachricht.Include(n => n.User);
+            var webApplication1_SozialMediaPlatform01Context = _context.Nachricht.Include(n => n.User).Include(x=>x.Like);
             return View(await webApplication1_SozialMediaPlatform01Context.ToListAsync());
         }
 
@@ -213,6 +213,45 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
         private bool NachrichtExists(int id)
         {
             return _context.Nachricht.Any(e => e.Id == id);
+        }
+
+        //------------- User ermitteln auslager
+
+        public User UserErmitteln()
+        {
+            string guid = Request.Cookies["guid"].ToString();
+            // Person wird anhand des guid ermittelt
+            User user = _context.User.Where(x => x.Guid == guid).FirstOrDefault();
+
+
+            return user;
+        }
+
+
+        //------------- LIKEN
+        
+        
+        public IActionResult Liken(int nachrichtId)
+        {
+            // User ermitteln dert Liket
+            User user = UserErmitteln();
+            // Nachricht die geliket wurde
+            Nachricht nachricht = _context.Nachricht.Include(x=>x.Like).Where(x=>x.Id == nachrichtId).FirstOrDefault();
+
+            // erstellen neuen Likes
+            Like like = new Like();
+            like.User=user;
+            like.LikeBool = true;
+            like.Nachricht=nachricht;
+
+            nachricht.Like.Add(like);
+
+            _context.Add(like);
+            _context.Add(nachricht);
+            _context.SaveChangesAsync();
+
+            // Wenn geliket dann danke seite
+            return View();
         }
     }
 }
