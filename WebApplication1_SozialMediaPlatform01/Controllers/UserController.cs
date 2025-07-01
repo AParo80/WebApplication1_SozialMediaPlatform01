@@ -25,7 +25,8 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
         // GET: User
         public async Task<IActionResult> Index()
         {
-            return View(await _context.User.ToListAsync());
+            //return View(await _context.User.ToListAsync());
+            return View(_context.User.ToList());
         }
 
         // GET: User/Details/5

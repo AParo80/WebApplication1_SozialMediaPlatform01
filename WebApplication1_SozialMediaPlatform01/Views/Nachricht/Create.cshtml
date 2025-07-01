@@ -15,6 +15,7 @@
             <div class="form-group">
                 <label asp-for="Post" class="control-label"></label>
                 <input asp-for="Post" class="form-control" />
+                @* <input type="text" name="Post" placeholder="Ihre Eingabe" class="form-control" minlength="3" maxlength="123" /> *@
                 <span asp-validation-for="Post" class="text-danger"></span>
             </div>
 @*             <div class="form-group">
@@ -39,7 +40,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
 }

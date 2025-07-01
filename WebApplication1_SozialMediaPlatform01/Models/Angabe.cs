@@ -13,7 +13,7 @@ Die plattform soll folgende Funktionalitäten umfassen:  Funktionsbeschreibung
 - Passwort
 Optional: - Kurzbeschreibung (max. 300 Zeiichen)
 Hinweis: Benutzer sollen sich sowohl mit email-adresse als auch miti Buenuutzernamen einloggen können.  Dabei sind aktuelle gängige Sicherheitsmaßnahmen und Passwortrihtlinien einzuhalten.
-2. Anzeigen von Chirps für anonyme Benutzer:
+2. Anzeigen von Chirps für anonyme Benutzer: 
 Anzeige der letzten 5 geposteten CHhirps absteigend nahc dme Posting-Datum
 3. Verfassen und Anzeigen von Chirps für angemeldete Benutzer:
 - Verfassen von Nahcrichten mit max. 123 Zeichen

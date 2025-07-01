@@ -4,6 +4,6 @@
     {
         public int Id { get; set; }
         public string PeepWort { get; set; }
-        public List<NachrichtPeep>? NachrichtpeepListe { get; set; } = new List<NachrichtPeep>();
+        public List<Nachricht>? NachrichtListe { get; set; } = new List<Nachricht>();
     }
 }

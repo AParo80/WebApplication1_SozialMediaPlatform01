@@ -12,8 +12,8 @@ using WebApplication1_SozialMediaPlatform01.Data;
 namespace WebApplication1_SozialMediaPlatform01.Migrations
 {
     [DbContext(typeof(WebApplication1_SozialMediaPlatform01Context))]
-    [Migration("20250630130249_03")]
-    partial class _03
+    [Migration("20250701105220_01")]
+    partial class _01
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,9 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("PeepId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Post")
                         .IsRequired()
                         .HasMaxLength(123)
@@ -72,32 +75,11 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PeepId");
+
                     b.HasIndex("UserId");
 
                     b.ToTable("Nachricht");
-                });
-
-            modelBuilder.Entity("WebApplication1_SozialMediaPlatform01.Models.NachrichtPeep", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("NachrichtId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PeepId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NachrichtId");
-
-                    b.HasIndex("PeepId");
-
-                    b.ToTable("NachrichtPeep");
                 });
 
             modelBuilder.Entity("WebApplication1_SozialMediaPlatform01.Models.Peep", b =>
@@ -180,6 +162,10 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
 
             modelBuilder.Entity("WebApplication1_SozialMediaPlatform01.Models.Nachricht", b =>
                 {
+                    b.HasOne("WebApplication1_SozialMediaPlatform01.Models.Peep", null)
+                        .WithMany("NachrichtListe")
+                        .HasForeignKey("PeepId");
+
                     b.HasOne("WebApplication1_SozialMediaPlatform01.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -187,31 +173,14 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WebApplication1_SozialMediaPlatform01.Models.NachrichtPeep", b =>
-                {
-                    b.HasOne("WebApplication1_SozialMediaPlatform01.Models.Nachricht", "Nachricht")
-                        .WithMany("NachrichtpeepListe")
-                        .HasForeignKey("NachrichtId");
-
-                    b.HasOne("WebApplication1_SozialMediaPlatform01.Models.Peep", "Peep")
-                        .WithMany("NachrichtpeepListe")
-                        .HasForeignKey("PeepId");
-
-                    b.Navigation("Nachricht");
-
-                    b.Navigation("Peep");
-                });
-
             modelBuilder.Entity("WebApplication1_SozialMediaPlatform01.Models.Nachricht", b =>
                 {
                     b.Navigation("Like");
-
-                    b.Navigation("NachrichtpeepListe");
                 });
 
             modelBuilder.Entity("WebApplication1_SozialMediaPlatform01.Models.Peep", b =>
                 {
-                    b.Navigation("NachrichtpeepListe");
+                    b.Navigation("NachrichtListe");
                 });
 #pragma warning restore 612, 618
         }

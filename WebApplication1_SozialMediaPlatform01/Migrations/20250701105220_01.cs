@@ -12,6 +12,19 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Peep",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PeepWort = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Peep", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -40,11 +53,17 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Post = table.Column<string>(type: "nvarchar(123)", maxLength: 123, nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: true),
-                    PostZeitpunkt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    PostZeitpunkt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    PeepId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Nachricht", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Nachricht_Peep_PeepId",
+                        column: x => x.PeepId,
+                        principalTable: "Peep",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Nachricht_User_UserId",
                         column: x => x.UserId,
@@ -88,6 +107,11 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Nachricht_PeepId",
+                table: "Nachricht",
+                column: "PeepId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Nachricht_UserId",
                 table: "Nachricht",
                 column: "UserId");
@@ -101,6 +125,9 @@ namespace WebApplication1_SozialMediaPlatform01.Migrations
 
             migrationBuilder.DropTable(
                 name: "Nachricht");
+
+            migrationBuilder.DropTable(
+                name: "Peep");
 
             migrationBuilder.DropTable(
                 name: "User");

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualBasic;
 using WebApplication1_SozialMediaPlatform01.Data;
 using WebApplication1_SozialMediaPlatform01.Models;
 
@@ -82,9 +83,38 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
             nachricht.UserId = user.Id;
             nachricht.PostZeitpunkt=DateTime.Now;
 
+            string myPeep = "";
 
             if (ModelState.IsValid)
             {
+                // zwischen > und < muß der peep stehen!
+                if (nachricht.Post.Contains('>') && nachricht.Post.Contains('<'))
+                {
+                    for(int i = nachricht.Post.IndexOf('>'); i <= nachricht.Post.IndexOf('<'); i++)
+                    {
+                        myPeep += nachricht.Post[i];
+
+
+                        if (i > 16)
+                        {
+                            myPeep = "";
+                            break;
+                        }
+
+                        if(i == nachricht.Post.IndexOf('<'))
+                        {
+                            Peep peep = new Peep();
+                            peep.PeepWort= myPeep;
+                            peep.NachrichtListe.Add(nachricht);
+
+                            // Hier kommt Fehlermeldung!-
+                            _context.Add(peep);
+                            //await _context.SaveChangesAsync();
+                        }
+
+                    }
+                }
+
                 _context.Add(nachricht);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

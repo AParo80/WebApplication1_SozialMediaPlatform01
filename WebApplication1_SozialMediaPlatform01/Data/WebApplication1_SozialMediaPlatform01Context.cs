@@ -18,6 +18,5 @@ namespace WebApplication1_SozialMediaPlatform01.Data
         public DbSet<WebApplication1_SozialMediaPlatform01.Models.Like> Like { get; set; } = default!;
         public DbSet<WebApplication1_SozialMediaPlatform01.Models.Nachricht> Nachricht { get; set; } = default!;
         public DbSet<WebApplication1_SozialMediaPlatform01.Models.Peep> Peep { get; set; } = default!;
-        public DbSet<WebApplication1_SozialMediaPlatform01.Models.NachrichtPeep> NachrichtPeep { get; set; } = default!;
     }
 }
