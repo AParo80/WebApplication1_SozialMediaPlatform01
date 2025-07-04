@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.Post)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Password)
+                @Html.DisplayFor(modelItem => item.User.Username)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PostZeitpunkt)
@@ -42,11 +42,12 @@
             <td>
                 @* Anzahl der Likes*@
 
-                @item.Like.Count()
+                 @item.Like.Count() @*//x => x.LikeBool == true) *@
             </td>
             <td>
                
-                    <a href="/Nachricht/Liken?nachrichtId=@item.Id"> LIKE </a> |
+                <a href="/Nachricht/Liken?nachrichtId=@item.Id"> LIKE </a> |
+                <a href="/Nachricht/EntLiken?nachrichtId=@item.Id"> LIKE </a> |
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>

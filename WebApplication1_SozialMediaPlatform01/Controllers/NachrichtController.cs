@@ -1,11 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Threading.Tasks;
 using WebApplication1_SozialMediaPlatform01.Data;
 using WebApplication1_SozialMediaPlatform01.Models;
 
@@ -231,7 +233,8 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
         //------------- LIKEN
         
         
-        public IActionResult Liken(int nachrichtId)
+        //Hier etwas geändert
+        public async Task<IActionResult> Liken(int nachrichtId)
         {
             // User ermitteln dert Liket
             User user = UserErmitteln();
@@ -247,10 +250,62 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
             nachricht.Like.Add(like);
 
             _context.Add(like);
-            _context.Add(nachricht);
-            _context.SaveChangesAsync();
+            //_context.Add(nachricht);
+            // await ist wichtig!!
+            await _context.SaveChangesAsync();
 
-            // Wenn geliket dann danke seite
+            int anzahl = nachricht.Like.Count(); //(x => x.LikeBool == true);
+
+              @ViewBag.Anzahl = anzahl;
+
+
+            int dbAnzahl = _context.Nachricht.Where(x => x.Id==nachrichtId).Count();
+            @ViewBag.AnzahlDB = dbAnzahl;
+
+            return View();
+        }
+        public async Task<IActionResult> EntLiken(int nachrichtId)
+        {
+            // User ermitteln dert Liket
+            User user = UserErmitteln();
+            // Nachricht die geliket wurde
+            //Nachricht nachricht = _context.Nachricht.Include(x => x.Like.Where(l => l.User == user)).Where(x => x.Id == nachrichtId).FirstOrDefault();
+
+            // Wie finde ich User der die Nachricht geliket hat?
+            Nachricht nachricht = _context.Nachricht.Include(x => x.Like).Where()
+
+
+
+
+
+            if (nachricht.User != user)
+            {
+                return NotFound();
+            }
+
+
+
+
+            Like like = new Like();
+            like.User = user;
+            like.LikeBool = true;
+            like.Nachricht = nachricht;
+
+            nachricht.Like.Add(like);
+
+            _context.Add(like);
+            //_context.Add(nachricht);
+            // await ist wichtig!!
+            await _context.SaveChangesAsync();
+
+            int anzahl = nachricht.Like.Count(); //(x => x.LikeBool == true);
+
+            @ViewBag.Anzahl = anzahl;
+
+
+            int dbAnzahl = _context.Nachricht.Where(x => x.Id == nachrichtId).Count();
+            @ViewBag.AnzahlDB = dbAnzahl;
+
             return View();
         }
     }

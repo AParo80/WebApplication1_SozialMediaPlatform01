@@ -1,4 +1,4 @@
-﻿namespace WebApplication1_SozialMediaPlatform01.Models
+﻿namespace WebApplication1_SozialMediaPlatform01.Docs
 {
     /*
 

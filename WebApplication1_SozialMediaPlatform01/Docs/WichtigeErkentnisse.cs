@@ -1,4 +1,4 @@
-﻿namespace WebApplication1_SozialMediaPlatform01.Models
+﻿namespace WebApplication1_SozialMediaPlatform01.Docs
 {
     public class WichtigeErkentnisse
     {
@@ -10,6 +10,9 @@
         Client-Seitige validierung bedarf get statt POST. Mit Get funktioniert es nicht, zumindest bei mir!!!
 
 
+        wenn man 2 _context.Add() hat AUFPASSEN! Meist genügt nur 1 weil es mit INCLUDE drinnen ist
+         _context.Add(like);
+         _context.Add(nachricht);
 
          */
     }

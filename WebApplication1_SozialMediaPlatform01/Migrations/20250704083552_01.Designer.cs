@@ -12,7 +12,7 @@ using WebApplication1_SozialMediaPlatform01.Data;
 namespace WebApplication1_SozialMediaPlatform01.Migrations
 {
     [DbContext(typeof(WebApplication1_SozialMediaPlatform01Context))]
-    [Migration("20250701105220_01")]
+    [Migration("20250704083552_01")]
     partial class _01
     {
         /// <inheritdoc />

@@ -1,4 +1,4 @@
-﻿namespace WebApplication1_SozialMediaPlatform01.Models
+﻿namespace WebApplication1_SozialMediaPlatform01.Docs
 {
 
     /*
@@ -18,7 +18,7 @@ Anzeige der letzten 5 geposteten CHhirps absteigend nahc dme Posting-Datum
 3. Verfassen und Anzeigen von Chirps für angemeldete Benutzer:
 - Verfassen von Nahcrichten mit max. 123 Zeichen
 - Anzeigen der letzten 10 Chirps absteigend nach dme Posting-Datum
-- Möglichkei, Chirps zu liken bzw zu entliken
+- Möglichkei, Chirps zu liken bzw zu entliken    --> TODO
 - Filterfunktion für Chirps mit einem bestimmten Peep
 4. Peeps:
 - Hervorhebungvon Themen/Begriffen mit dem Schnabel-SZeichen(<>
