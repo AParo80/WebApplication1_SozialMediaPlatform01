@@ -28,6 +28,12 @@
                         @if (Context.Request.Cookies["guid"] != null)
                         {
                             <li class="nav-item">
+                                <a class="nav-link text-dark" style="background-color:lightyellow" asp-area="" asp-controller="Peep" asp-action="haeufigstePeeps">"Häufigste Peeps!"</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" style="background-color:lightyellow" asp-area="" asp-controller="User" asp-action="Details">UserDetails</a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link text-dark" style="background-color:lightyellow" asp-area="" asp-controller="Nachricht" asp-action="Index">AlleNachrichten</a>
                             </li>
                             <li class="nav-item">
@@ -39,6 +45,9 @@
                         }
                         else
                         {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" style="background-color:lightyellow" asp-area="" asp-controller="User" asp-action="Create">Anmelden</a>
+                            </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" style="background-color:lawngreen" asp-area="" asp-controller="User" asp-action="LoginForm">Login</a>
                             </li>

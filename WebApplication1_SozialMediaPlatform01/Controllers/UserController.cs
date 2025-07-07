@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebApplication1_SozialMediaPlatform01.Data;
 using WebApplication1_SozialMediaPlatform01.Models;
+using WebApplication1_SozialMediaPlatform01.ViewModels;
 
 namespace WebApplication1_SozialMediaPlatform01.Controllers
 {
@@ -32,20 +33,69 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
         // GET: User/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            // Erstellt im ViewModel: UserNachrichtenListe
+            
+
             if (id == null)
             {
-                return NotFound();
+                string guid = Request.Cookies["guid"].ToString();
+                User person = _context.User.Where(x => x.Guid == guid).FirstOrDefault();
+
+                if (person == null)
+                {
+                    return NotFound();
+                }
+
+
+                id = person.Id;
+
             }
 
-            var user = await _context.User
+            UserNachrichtenListe uNL = new UserNachrichtenListe();
+            uNL.User = await _context.User
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (user == null)
+
+            uNL.NachrichtenListe = await _context.Nachricht.Where(x => x.User == uNL.User).Include(u => u.User).OrderByDescending(n => n.PostZeitpunkt).Take(5).ToListAsync();
+
+            ViewBag.AnzahlGeposteteChirps = _context.Nachricht.Where(x => x.User == uNL.User).Count();
+            ViewBag.AnzahlLikes = _context.Like.Where(x => x.User == uNL.User).Count();
+            //var user = await _context.User
+            //    .FirstOrDefaultAsync(m => m.Id == id);
+            if (uNL.User == null)
             {
                 return NotFound();
             }
 
-            return View(user);
+            return View(uNL);
         }
+        //public async Task<IActionResult> Details()
+        //{
+        //    string guid = Request.Cookies["guid"].ToString();
+        //    User person = _context.User.Where(x => x.Guid == guid).FirstOrDefault();
+
+        //    // Erstellt im ViewModel: UserNachrichtenListe
+
+        //    if (person.Id == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    UserNachrichtenListe uNL = new UserNachrichtenListe();
+        //    uNL.User = await _context.User
+        //        .FirstOrDefaultAsync(m => m.Id == person.Id);
+
+        //    uNL.NachrichtenListe = await _context.Nachricht.Include(u => u.User == uNL.User).OrderByDescending(n => n.PostZeitpunkt).Take(5).ToListAsync();
+
+
+        //    //var user = await _context.User
+        //    //    .FirstOrDefaultAsync(m => m.Id == id);
+        //    if (uNL.User == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    return View(uNL);
+        //}
 
         // GET: User/Create
         public IActionResult Create()
@@ -257,6 +307,7 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
 
             //return RedirectToAction("Willkommen", user);
             // User kommt nach Einloggen zu seinen eigegenen chirps und sieht dort seine eigenen 5 stück gepostete Chirps!
+            //return RedirectToAction("BenutzerNachrichtIndex", "Nachricht");
             return RedirectToAction("BenutzerNachrichtIndex", "Nachricht");
         }
         public IActionResult Logout()

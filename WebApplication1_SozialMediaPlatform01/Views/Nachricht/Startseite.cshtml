@@ -1,10 +1,12 @@
 ﻿@model IEnumerable<WebApplication1_SozialMediaPlatform01.Models.Nachricht>
 
-<h1>Meine 10 letzten Nachrichten</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Willkommen Fremder!</h1>
+<p>Bitte loggen Sie sich ein!</p>
+
+
+<h3>Hier kommen die 5 letzten Nachrichten:</h3>
+
 <table class="table">
     <thead>
         <tr>
@@ -17,7 +19,10 @@
             <th>
                 @Html.DisplayNameFor(model => model.PostZeitpunkt)
             </th>
-            <th></th>
+            <th>
+                Anzahl der Likes
+            </th>
+            @* <th></th> *@
         </tr>
     </thead>
     <tbody>
@@ -28,21 +33,25 @@
                     @Html.DisplayFor(modelItem => item.Post)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.User.Password)
+                    @Html.DisplayFor(modelItem => item.User.Username)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PostZeitpunkt)
                 </td>
                 <td>
+                    @* Anzahl der Likes*@
+
+                    @item.Like.Count() @*//x => x.LikeBool == true) *@
+                </td>
+@*                 <td>
+
+                    <a href="/Nachricht/Liken?nachrichtId=@item.Id"> LIKE </a> |
+                    <a href="/Nachricht/EntLiken?nachrichtId=@item.Id"> LIKE </a> |
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
+                </td> *@
             </tr>
         }
     </tbody>
 </table>
-
-
-
-

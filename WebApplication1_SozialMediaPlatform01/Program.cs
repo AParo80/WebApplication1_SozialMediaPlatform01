@@ -29,7 +29,7 @@ namespace WebApplication1_SozialMediaPlatform01
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=User}/{action=Index}/{id?}");
+                pattern: "{controller=Nachricht}/{action=Startseite}/{id?}");
 
             app.Run();
         }

@@ -38,11 +38,11 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
 
             if (user != null)
             {
-                List<Nachricht> meineNachrichten = _context.Nachricht.Where(x =>x.UserId == user.Id).OrderByDescending(x => x.PostZeitpunkt).Take(5).ToList();
+                List<Nachricht> meineNachrichten = _context.Nachricht.Where(x =>x.UserId == user.Id).OrderByDescending(x => x.PostZeitpunkt).Take(10).ToList();
                 return View(meineNachrichten);
             }
 
-            var webApplication1_SozialMediaPlatform01Context = _context.Nachricht.Include(n => n.User).OrderByDescending(x => x.PostZeitpunkt).Take(5);
+            var webApplication1_SozialMediaPlatform01Context = _context.Nachricht.Include(n => n.User).OrderByDescending(x => x.PostZeitpunkt).Take(10);
             return View(await webApplication1_SozialMediaPlatform01Context.ToListAsync());
         }
 
@@ -264,49 +264,65 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
 
             return View();
         }
-        public async Task<IActionResult> EntLiken(int nachrichtId)
+        //public async Task<IActionResult> EntLiken(int nachrichtId)
+        //{
+
+        //NICHT gemacht da es zuviel Zeit in Anspruch nimmt!
+
+        //    //// User ermitteln dert Liket
+        //    //User user = UserErmitteln();
+        //    //// Nachricht die geliket wurde
+        //    //Nachricht nachricht = _context.Nachricht.Include(l => l.Like).Where(x => x.Id == nachrichtId).FirstOrDefault();
+
+        //    //Like entliken = _context.Like.Where(x=> x.Nachricht == nachricht).FirstOrDefault();
+
+
+
+        //    //nachricht.Like
+
+
+        //    // -------------- >> Hier habe ich gestopt!!
+        //    // Wie finde ich User der die Nachricht geliket hat?
+        //    //Nachricht nachricht = _context.Nachricht.Include(x => x.Like).Where()
+
+
+
+
+
+        //    if (nachricht.User != user)
+        //    {
+        //        return NotFound();
+        //    }
+
+
+
+
+        //    Like like = new Like();
+        //    like.User = user;
+        //    like.LikeBool = true;
+        //    like.Nachricht = nachricht;
+
+        //    nachricht.Like.Add(like);
+
+        //    _context.Add(like);
+        //    //_context.Add(nachricht);
+        //    // await ist wichtig!!
+        //    await _context.SaveChangesAsync();
+
+        //    int anzahl = nachricht.Like.Count(); //(x => x.LikeBool == true);
+
+        //    @ViewBag.Anzahl = anzahl;
+
+
+        //    int dbAnzahl = _context.Nachricht.Where(x => x.Id == nachrichtId).Count();
+        //    @ViewBag.AnzahlDB = dbAnzahl;
+
+        //    return View();
+        //}
+        public async Task<IActionResult> Startseite()
         {
-            // User ermitteln dert Liket
-            User user = UserErmitteln();
-            // Nachricht die geliket wurde
-            //Nachricht nachricht = _context.Nachricht.Include(x => x.Like.Where(l => l.User == user)).Where(x => x.Id == nachrichtId).FirstOrDefault();
-
-            // Wie finde ich User der die Nachricht geliket hat?
-            Nachricht nachricht = _context.Nachricht.Include(x => x.Like).Where()
-
-
-
-
-
-            if (nachricht.User != user)
-            {
-                return NotFound();
-            }
-
-
-
-
-            Like like = new Like();
-            like.User = user;
-            like.LikeBool = true;
-            like.Nachricht = nachricht;
-
-            nachricht.Like.Add(like);
-
-            _context.Add(like);
-            //_context.Add(nachricht);
-            // await ist wichtig!!
-            await _context.SaveChangesAsync();
-
-            int anzahl = nachricht.Like.Count(); //(x => x.LikeBool == true);
-
-            @ViewBag.Anzahl = anzahl;
-
-
-            int dbAnzahl = _context.Nachricht.Where(x => x.Id == nachrichtId).Count();
-            @ViewBag.AnzahlDB = dbAnzahl;
-
-            return View();
+            var anonymeNutzer5Nachrichten = _context.Nachricht.Include(n => n.User).Include(x => x.Like).OrderByDescending(a => a.PostZeitpunkt).Take(5);
+            return View(await anonymeNutzer5Nachrichten.ToListAsync());
         }
     }
 }

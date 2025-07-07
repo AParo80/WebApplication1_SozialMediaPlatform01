@@ -1,72 +1,133 @@
-﻿@model WebApplication1_SozialMediaPlatform01.Models.User
+﻿@model WebApplication1_SozialMediaPlatform01.ViewModels.UserNachrichtenListe
+
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>User - Details</h1>
 
 <div>
     <h4>User</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Username)
+            @Html.DisplayNameFor(model => model.User.Username)
+            @* @Html.DisplayNameFor(model => model.Username) *@
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Username)
+            @Html.DisplayFor(model => model.User.Username)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EMail)
+            @Html.DisplayNameFor(model => model.User.EMail)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EMail)
+            @Html.DisplayFor(model => model.User.EMail)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Selbstbeschreibung)
+            @Html.DisplayNameFor(model => model.User.Selbstbeschreibung)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Selbstbeschreibung)
+            @Html.DisplayFor(model => model.User.Selbstbeschreibung)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Password)
+            @Html.DisplayNameFor(model => model.User.Password)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Password)
+            @Html.DisplayFor(model => model.User.Password)
+        </dd>
+@*         <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.User.Guid)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.User.Guid)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Guid)
+            @Html.DisplayNameFor(model => model.User.IsActive)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Guid)
+            @Html.DisplayFor(model => model.User.IsActive)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IsActive)
+            @Html.DisplayNameFor(model => model.User.PasswordHash)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsActive)
+            @Html.DisplayFor(model => model.User.PasswordHash)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PasswordHash)
+            @Html.DisplayNameFor(model => model.User.PasswordSalt)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PasswordHash)
+            @Html.DisplayFor(model => model.PasswordSalt) *@
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PasswordSalt)
+            @Html.DisplayNameFor(model => model.User.RegistriertAm)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PasswordSalt)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RegistriertAm)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RegistriertAm)
+            @Html.DisplayFor(model => model.User.RegistriertAm)
         </dd>
     </dl>
 </div>
-<div>
+
+<h5>Anzeige der fünf zuletzt verfassten Chirps</h5>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Post
+                @* @Html.DisplayNameFor(model => model.NachrichtenListe.Post) *@
+            </th>
+            <th>
+                User
+                @* @Html.DisplayNameFor(model => model.User) *@
+            </th>
+            <th>
+                Postzeitpunkt
+                @* @Html.DisplayNameFor(model => model.PostZeitpunkt) *@
+            </th>
+            <th>
+                Anzahl der Likes
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.NachrichtenListe)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Post)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Username)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostZeitpunkt)
+                </td>
+                <td>
+                    @* Anzahl der Likes*@
+
+                    @item.Like.Count() @*//x => x.LikeBool == true) *@
+                </td>
+                <td>
+
+@*                     <a href="/Nachricht/Liken?nachrichtId=@item.Id"> LIKE </a> |
+                    <a href="/Nachricht/EntLiken?nachrichtId=@item.Id"> LIKE </a> |
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> *@
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h3>Anzahl der geposteten Chirps: @ViewBag.AnzahlGeposteteChirps</h3>
+<h3>Anzahl der Likes: @ViewBag.AnzahlLikes</h3>
+
+
+@* <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
-</div>
+</div> *@

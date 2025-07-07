@@ -31,7 +31,22 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Post)
+                @foreach(char c in item.Post)
+                {
+                    if(c == '>')
+                    {
+                        @: <b> 
+                    }
+                    else if(c == '<')
+                    {
+                        @: </b>  
+                    }
+                    else{
+                        @c
+                    }
+                }
+                
+
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.Username)

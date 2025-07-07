@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -153,5 +154,21 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
         {
             return _context.Peep.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> haeufigstePeeps()
+        {
+            // Die häufigsten Peeps der letzten 24 Stunden
+            //List<Peep> peepListe = _context.Peep.Include(n => n.NachrichtListe).ToList();
+
+            List<Peep> peepListeNew = (from p in _context.Peep
+                                      where p.NachrichtListe.Any(n => n.PostZeitpunkt > DateTime.Now.AddHours(-24))
+                                      orderby p.PeepWort
+                                      select p).ToList();
+
+
+
+            return View(peepListeNew);
+        }
+        
     }
 }

@@ -1,0 +1,11 @@
+﻿@model List<WebApplication1_SozialMediaPlatform01.Models.Peep>
+
+
+<h1>Anzeige der 5 häufigsten Peeps der letzten24 Stundne</h1>
+
+<ul>
+@foreach(var p in Model)
+{
+    <li>@p.PeepWort</li>
+}
+</ul>
