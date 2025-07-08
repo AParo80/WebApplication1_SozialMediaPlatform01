@@ -14,6 +14,15 @@
          _context.Add(like);
          _context.Add(nachricht);
 
+        in einer View: wenn man Inline HTML code braucht in einem text: @:<b>Text</b> --> @: bewirkt das html direkt ausgegeben wird
+
+        Peep braucht ein DateTime das immer beim letzten mal überschreieben wird, wenn ein neuer Peep erstellt wird
+
+        Die Peeps könnte man auch mit Linq-Lösen! (lt. Ingram)
+
+        Liken auf einfach --> Eine Liste an User (mit Namen LikedList) in der Nachricht, da werden alle Nutzer gespeichert die die Nachricht geliket haben
+
+
          */
     }
 }

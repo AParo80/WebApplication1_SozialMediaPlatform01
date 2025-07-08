@@ -105,12 +105,15 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
 
                         if(i == nachricht.Post.IndexOf('<'))
                         {
+
+
                             Peep peep = new Peep();
                             peep.PeepWort= myPeep;
                             peep.NachrichtListe.Add(nachricht);
 
                             // Hier kommt Fehlermeldung!-
-                            _context.Add(peep);
+                            //_context.Add(peep);
+                            myPeep = "";
                             //await _context.SaveChangesAsync();
                         }
 
@@ -264,61 +267,31 @@ namespace WebApplication1_SozialMediaPlatform01.Controllers
 
             return View();
         }
-        //public async Task<IActionResult> EntLiken(int nachrichtId)
-        //{
+        public async Task<IActionResult> EntLiken(int nachrichtId)
+        {
 
-        //NICHT gemacht da es zuviel Zeit in Anspruch nimmt!
+            //NICHT gemacht da es zuviel Zeit in Anspruch nimmt!
 
-        //    //// User ermitteln dert Liket
-        //    //User user = UserErmitteln();
-        //    //// Nachricht die geliket wurde
-        //    //Nachricht nachricht = _context.Nachricht.Include(l => l.Like).Where(x => x.Id == nachrichtId).FirstOrDefault();
+            // User ermitteln dert Liket
+            User user = UserErmitteln();
 
-        //    //Like entliken = _context.Like.Where(x=> x.Nachricht == nachricht).FirstOrDefault();
+            // Nachricht die geliket wurde
+            Nachricht nachricht = _context.Nachricht.Include(x => x.Like).Where(x => x.Id == nachrichtId).FirstOrDefault();
 
+            Like entliken = _context.Like.Where(l => l.Nachricht == nachricht && l.User == user).FirstOrDefault();
+            if (entliken == null)
+            {
+                string fehlermeldung = "Du hast diese Nachricht nicht geliket!";
+                return RedirectToAction("Fehler", "User", new { fehlermeldung });
+            }
 
+            entliken.LikeBool = false;
 
-        //    //nachricht.Like
-
-
-        //    // -------------- >> Hier habe ich gestopt!!
-        //    // Wie finde ich User der die Nachricht geliket hat?
-        //    //Nachricht nachricht = _context.Nachricht.Include(x => x.Like).Where()
-
-
-
+            await _context.SaveChangesAsync();
 
 
-        //    if (nachricht.User != user)
-        //    {
-        //        return NotFound();
-        //    }
-
-
-
-
-        //    Like like = new Like();
-        //    like.User = user;
-        //    like.LikeBool = true;
-        //    like.Nachricht = nachricht;
-
-        //    nachricht.Like.Add(like);
-
-        //    _context.Add(like);
-        //    //_context.Add(nachricht);
-        //    // await ist wichtig!!
-        //    await _context.SaveChangesAsync();
-
-        //    int anzahl = nachricht.Like.Count(); //(x => x.LikeBool == true);
-
-        //    @ViewBag.Anzahl = anzahl;
-
-
-        //    int dbAnzahl = _context.Nachricht.Where(x => x.Id == nachrichtId).Count();
-        //    @ViewBag.AnzahlDB = dbAnzahl;
-
-        //    return View();
-        //}
+            return RedirectToAction("Index");
+        }
         public async Task<IActionResult> Startseite()
         {
             var anonymeNutzer5Nachrichten = _context.Nachricht.Include(n => n.User).Include(x => x.Like).OrderByDescending(a => a.PostZeitpunkt).Take(5);

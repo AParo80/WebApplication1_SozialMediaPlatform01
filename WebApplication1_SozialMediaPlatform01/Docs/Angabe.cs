@@ -23,7 +23,7 @@ Anzeige der letzten 5 geposteten CHhirps absteigend nahc dme Posting-Datum --> O
 4. Peeps:
 - Hervorhebungvon Themen/Begriffen mit dem Schnabel-SZeichen(<>     --> OK!
 - Extrakosten und gesonderte Speicherung beim Erstellen eines CHirps    --> Todo
-- Anzeige der 5 häufigsten Peeps der letzten24 Stundne     *PeepController/haeufigstePeeps()*   -->Todo  
+- Anzeige der 5 häufigsten Peeps der letzten24 Stundne     *PeepController/haeufigstePeeps()*   -->Todo   --> Ich denke model gehört dafür geändert (in den Peeps die Zeit eintragen)
 Hinweis: ist die Anzahl an alphanumerischen Zeichen zu klein (mind. 3 Zeichen) oder zu groß (max 16.Zeichen), dann zählt der ganze Begriff NICHT als Peep. --> OK!
  
 Beispiel:  
